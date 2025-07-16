@@ -1,2 +1,0 @@
-# Kikynastidecoraton
-kiky nasti wedding
