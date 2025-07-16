@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KikyNasti Wedding Decoration - Paket Pernikahan</title>
+    <!-- Tailwind CSS for utility-first styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for data visualization (Doughnut Chart) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts for elegant typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for body and headings using imported Google Fonts */
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #FDFBF8; /* Light background color for content sections */
+        }
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Styles for the chart container to ensure responsiveness and proper sizing */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px; /* Max width for desktop */
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px; /* Fixed height for consistency */
+            max-height: 400px;
+        }
+        /* Media query for larger screens to adjust chart container height */
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        /* Styling for the active tab button */
+        .tab-button.active {
+            border-color: #B8860B; /* Darker gold for active tab border */
+            background-color: #B8860B; /* Darker gold for active tab background */
+            color: #ffffff; /* White text for active tab */
+            box-shadow: 0 4px 10px rgba(184, 134, 11, 0.4); /* Subtle gold shadow */
+        }
+        /* Styling for the active package selection button */
+        .package-button.active {
+            background-color: #B8860B; /* Darker gold for active package button */
+            color: #ffffff; /* White text for active package button */
+            border-color: #B8860B;
+            box-shadow: 0 4px 10px rgba(184, 134, 11, 0.4); /* Subtle gold shadow */
+        }
+        /* Enhanced hover effects for buttons */
+        .package-button:hover, .tab-button:hover {
+            transform: translateY(-2px); /* Slight lift effect */
+            box-shadow: 0 6px 15px rgba(184, 134, 11, 0.6); /* More pronounced shadow on hover */
+        }
+        /* General shadow for content cards */
+        .card-shadow {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Deeper shadow for content blocks */
+        }
+
+        /* CSS for fade transition effect */
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.3s ease-out; /* Smooth fade out */
+        }
+        .fade-in {
+            opacity: 1;
+            transition: opacity 0.3s ease-in; /* Smooth fade in */
+        }
+        /* Smooth transition for background image on hero section */
+        #hero {
+            transition: background-image 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <!-- Header section with navigation bar -->
+    <header class="bg-black text-white shadow-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <!-- Company logo/name -->
+            <h3 class="text-2xl md:text-3xl font-bold text-amber-300">KikyNasti Wedding Decoration</h3>
+            <!-- Navigation links -->
+            <div class="space-x-4 text-lg">
+                <a href="#paket" class="hover:text-amber-500 transition duration-300">Detail Paket</a>
+                <a href="#galeri" class="hover:text-amber-500 transition duration-300">Galeri</a>
+                <a href="#kontak" class="hover:text-amber-500 transition duration-300">Kontak</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero section with background image and main package details -->
+        <section id="hero" class="relative text-white text-center flex items-center justify-center h-[65vh] md:h-[80vh] bg-cover bg-center" style="background-image: url('https://i.imgur.com/zhWaknU.jpeg');">
+            <!-- Overlay for better text readability -->
+            <div class="absolute inset-0 bg-black opacity-70"></div>
+            <!-- Hero content -->
+            <div class="relative z-10 p-6 max-w-4xl mx-auto">
+                <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-4 text-amber-300 drop-shadow-lg">Wedding All Package</h1>
+                <h2 class="text-2xl md:text-4xl text-amber-100 mb-4 drop-shadow-md">KikyNasti Wedding Decoration</h2>
+                <p id="hero-price" class="text-4xl md:text-5xl font-bold text-amber-500 mb-3 drop-shadow-lg">IDR 20.000.000,-</p>
+                <p class="text-lg md:text-xl mt-2 italic text-amber-50">(Belum termasuk biaya transportasi)</p>
+                <p class="text-xl md:text-2xl mt-4 text-amber-50 font-semibold">Wujudkan Pernikahan Impian Anda dengan Sentuhan Elegan dan Memukau</p>
+            </div>
+        </section>
+
+        <!-- Package details section with interactive tabs and a chart -->
+        <section id="paket" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-black">Detail Paket Pernikahan</h2>
+                    <p class="text-lg text-stone-700">
+                        Untuk memberikan gambaran lengkap, kami telah merinci semua yang akan Anda dapatkan dalam paket pernikahan ini. Pilih paket yang sesuai dengan kebutuhan Anda untuk melihat detail layanan yang kami sediakan.
+                    </p>
+                </div>
+
+                <!-- Package selection buttons -->
+                <div class="flex flex-wrap justify-center gap-4 mb-12">
+                    <button data-package="20jt" class="package-button active text-sm md:text-base border-2 border-stone-300 rounded-full px-6 py-3 hover:bg-amber-600 hover:text-white hover:border-amber-600 transition duration-300 font-bold shadow-md">Paket 20 Juta</button>
+                    <button data-package="22jt" class="package-button text-sm md:text-base border-2 border-stone-300 rounded-full px-6 py-3 hover:bg-amber-600 hover:text-white hover:border-amber-600 transition duration-300 font-bold shadow-md">Paket 22 Juta</button>
+                    <button data-package="25jt" class="package-button text-sm md:text-base border-2 border-stone-300 rounded-full px-6 py-3 hover:bg-amber-600 hover:text-white hover:border-amber-600 transition duration-300 font-bold shadow-md">Paket 25 Juta</button>
+                    <button data-package="30jt" class="package-button text-sm md:text-base border-2 border-stone-300 rounded-full px-6 py-3 hover:bg-amber-600 hover:text-white hover:border-amber-600 transition duration-300 font-bold shadow-md">Paket 30 Juta</button>
+                    <button data-package="35jt" class="package-button text-sm md:text-base border-2 border-stone-300 rounded-full px-6 py-3 hover:bg-amber-600 hover:text-white hover:border-amber-600 transition duration-300 font-bold shadow-md">Paket 35 Juta</button>
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-12 items-start">
+                    <!-- Left column for package details tabs -->
+                    <div class="w-full lg:w-1/2">
+                        <div class="mb-8">
+                            <!-- Tab buttons for different categories -->
+                            <div id="tabs" class="flex flex-wrap justify-center gap-3 md:gap-4 mb-8">
+                                <button data-tab="tab1" class="tab-button active text-sm md:text-base border-2 border-stone-300 rounded-full px-5 py-2 hover:bg-amber-600 hover:text-white hover:border-amber-600 transition duration-300 shadow-md">Busana & Rias</button>
+                                <button data-tab="tab2" class="tab-button text-sm md:text-base border-2 border-stone-300 rounded-full px-5 py-2 hover:bg-amber-600 hover:text-white hover:border-amber-600 transition duration-300 shadow-md">Dokumentasi</button>
+                                <button data-tab="tab3" class="tab-button text-sm md:text-base border-2 border-stone-300 rounded-full px-5 py-2 hover:bg-amber-600 hover:text-white hover:border-amber-600 transition duration-300 shadow-md">Dekorasi</button>
+                                <button data-tab="tab4" class="tab-button text-sm md:text-base border-2 border-stone-300 rounded-full px-5 py-2 hover:bg-amber-600 hover:text-white hover:border-amber-600 transition duration-300 shadow-md">Perlengkapan</button>
+                            </div>
+                        </div>
+
+                        <!-- Tab content areas -->
+                        <div id="tab-content" class="bg-stone-50 p-8 rounded-lg card-shadow">
+                            <!-- Content will be dynamically loaded here by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Right column for the package value allocation chart -->
+                    <div class="w-full lg:w-1/2">
+                        <div class="bg-stone-50 p-8 rounded-lg card-shadow text-center">
+                               <h3 class="text-2xl font-bold mb-4 text-amber-700">Estimasi Alokasi Nilai Paket</h3>
+                               <p class="text-stone-700 mb-6">Visualisasi ini menunjukkan bagaimana nilai paket terdistribusi di berbagai layanan utama, memastikan Anda mendapatkan yang terbaik di setiap aspek.</p>
+                               <div class="chart-container">
+                                    <canvas id="packageChart"></canvas>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery section for showcasing past work -->
+        <section id="galeri" class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-6">
+                   <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-black">Galeri Momen Indah</h2>
+                    <p class="text-lg text-stone-700">
+                        Lihatlah beberapa momen indah yang telah kami bantu ciptakan. Galeri ini menampilkan kualitas riasan, busana, dan dekorasi kami yang akan menjadi bagian dari hari bahagia Anda.
+                    </p>
+                </div>
+                <!-- Grid for gallery images with hover effects -->
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+                    <div class="overflow-hidden rounded-lg shadow-xl">
+                        <img src="https://i.imgur.com/ojgTZpN.jpeg" alt="Potret Pengantin" class="w-full h-64 object-cover transform hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="overflow-hidden rounded-lg shadow-xl">
+                        <img src="https://i.imgur.com/culENRJ.jpeg" alt="Dekorasi Resepsi" class="w-full h-64 object-cover transform hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="overflow-hidden rounded-lg shadow-xl">
+                        <img src="https://i.imgur.com/Nw1ztPb.jpeg" alt="Foto Pilihan Anda" class="w-full h-64 object-cover transform hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="overflow-hidden rounded-lg shadow-xl">
+                           <img src="https://i.imgur.com/jCAmTuL.jpeg" alt="Pesta Pernikahan" class="w-full h-64 object-cover transform hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="overflow-hidden rounded-lg shadow-xl">
+                        <img src="https://i.imgur.com/zDdR5u7.jpeg" alt="Momen Cincin" class="w-full h-64 object-cover transform hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="overflow-hidden rounded-lg shadow-xl">
+                        <img src="https://i.imgur.com/k6y7vuy.jpeg" alt="Foto Pasangan" class="w-full h-64 object-cover transform hover:scale-110 transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact section with contact details and a call-to-action button -->
+        <section id="kontak" class="py-16 md:py-24 bg-black text-white">
+            <div class="container mx-auto px-6 text-center">
+                   <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-amber-300">Hubungi Kami</h2>
+                    <p class="text-lg text-amber-100">
+                        Siap untuk mewujudkan pernikahan impian Anda? Jangan ragu untuk menghubungi kami melalui detail kontak di bawah ini. Tim kami siap menjawab semua pertanyaan Anda dan memulai perencanaan.
+                    </p>
+                </div>
+                <!-- Contact information details -->
+                <div class="flex flex-col md:flex-row justify-center items-center gap-10 text-lg">
+                    <div class="text-center">
+                        <h4 class="text-xl font-bold mb-2 text-amber-500">Alamat</h4>
+                        <p>Jl. Rorotan II, Cilincing, Jakarta Utara</p>
+                    </div>
+                    <div class="text-center">
+                           <h4 class="text-xl font-bold mb-2 text-amber-500">Telepon / WhatsApp</h4>
+                        <a href="https://wa.me/6281218167654" target="_blank" class="hover:text-amber-300 transition">0812 1816 7654</a>
+                    </div>
+                       <div class="text-center">
+                           <h4 class="text-xl font-bold mb-2 text-amber-500">Media Sosial</h4>
+                           <div class="flex justify-center space-x-4">
+                                <a href="https://www.instagram.com/kikynasti/" target="_blank" class="hover:text-amber-300 transition">Instagram</a>
+                                <a href="https://www.facebook.com/nastikiky/" target="_blank" class="hover:text-amber-300 transition">Facebook</a>
+                           </div>
+                    </div>
+                </div>
+                <!-- WhatsApp consultation button -->
+                   <a id="whatsapp-link" href="https://wa.me/6281218167654?text=Halo%2C%20saya%20tertarik%20dengan%20paket%20pernikahan%2020jt." target="_blank" class="mt-16 inline-block bg-amber-600 text-black font-bold py-4 px-10 rounded-full hover:bg-amber-500 transition duration-300 shadow-xl text-xl">Konsultasi via WhatsApp</a>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer section -->
+    <footer class="bg-gray-950 text-stone-400 text-center py-6">
+        <p>&copy; 2025 KikyNasti Wedding Decoration. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Define package data for all available packages
+        const packages = {
+            '20jt': {
+                price: 'IDR 20.000.000,-',
+                heroImage: 'https://i.imgur.com/zhWaknU.jpeg', // General wedding background
+                busanaRias: [
+                    'Busana pengantin 2x ganti',
+                    'Busana orang tua 2 pasang + make up',
+                    'Busana pagar ayu 2 orang + make up',
+                    'Melati full ronce 1 set',
+                    'Buket bunga asli'
+                ],
+                dokumentasi: [
+                    'Photo + Video Syuting',
+                    'Album kolase 10 lembar',
+                    'Video Cinematik',
+                    'Softfile Flashdisk'
+                ],
+                dekorasi: [
+                    'Tenda full decoration 100m',
+                    'Pelaminan 6m full decoration',
+                    'Bebas pilih warna tenda',
+                    'Kursi futura + cover 100pcs',
+                    'Gapura penerima tamu ukuran 3x3 meter',
+                    'Full karpet',
+                    'Janur jumbo 1pcs',
+                    'Kotak uang 2pcs',
+                    'Mini garden full dekorasi',
+                    'Blower pendingin 2 unit'
+                ],
+                perlengkapanLainnya: [
+                    'Piring, sendok, & garpu 150 pcs',
+                    'Meja prasmanan 1 baris',
+                    'Gubukan jajanan 2 meja',
+                    'Meja penerima tamu 2',
+                    'Meja akad 1',
+                    'Meja bulet 1',
+                    'Rolltop 5pcs',
+                    'Termos nasi 2',
+                    'Tempat es 1',
+                    'Tempat sop 1'
+                ],
+                chartData: [40, 25, 15, 20] // Estimated allocation for 20JT
+            },
+            '22jt': {
+                price: 'IDR 22.000.000,-',
+                heroImage: 'https://i.imgur.com/L9z5d7g.jpeg', // Placeholder for 22jt
+                busanaRias: [
+                    'Busana pengantin 3x ganti',
+                    'Busana orang tua 2 pasang + make up',
+                    'Busana pagar ayu 4 orang + make up',
+                    'Melati full ronce 1 set',
+                    'Buket bunga asli',
+                    'Softlens + kuku'
+                ],
+                dokumentasi: [
+                    'Photo + Video Syuting',
+                    'Album kolase 10 lembar',
+                    'Sound system'
+                ],
+                dekorasi: [
+                    'Tenda full decoration 100m',
+                    'Pelaminan full decoration bunga asli 6m',
+                    'Bergola dalam tenda jumbo full decoration 3m',
+                    'Backdrof full decoration 4m',
+                    'Standing bunga + Decoration 8 pcs',
+                    'Pondokan 2 set',
+                    'Bangku + sarung 150 pcs',
+                    'Gapura pintu utama 1 set',
+                    'Perasmanan 2 set 10 rolltop',
+                    'Perlengkapan memasak komplit',
+                    'Piring + sendok + garpu 200 pcs',
+                    'Kotak uang 2 Pcs',
+                    'Full karpet'
+                ],
+                perlengkapanLainnya: [
+                    'Kipas Blower besar 2 pcs',
+                    'Meja penerimaan tamu 2 set',
+                    'Meja tamu 2 set'
+                ],
+                chartData: [40, 30, 20, 10] // Estimated allocation for 22JT
+            },
+            '25jt': {
+                price: 'IDR 25.000.000,-',
+                heroImage: 'https://i.imgur.com/f1X2y3b.jpeg', // Placeholder for 25jt
+                busanaRias: [
+                    'Busana pengantin 3x ganti',
+                    'Busana orang tua 2 pasang + make up',
+                    'Busana pagar ayu 4 orang + make up',
+                    'Melati full ronce 1 set',
+                    'Buket bunga asli',
+                    'Henna White asli',
+                    'Softlens + kuku'
+                ],
+                dokumentasi: [
+                    'Photo + Video Syuting',
+                    'Album kolase 10 lembar',
+                    'Sound system'
+                ],
+                dekorasi: [
+                    'Tenda full decoration 140m',
+                    'Pelaminan full decoration bunga asli 6m',
+                    'Bergola dalam tenda jumbo full decoration 3m',
+                    'Backdrof full decoration 4m',
+                    'Standing bunga + Decoration 8 pcs',
+                    'Pondokan 2 set',
+                    'Kursi futura 150 pcs + sarung',
+                    'Gapura pintu utama 1 set',
+                    'Perasmanan 2 set 10 rolltop',
+                    'Perlengkapan memasak full',
+                    'Piring + sendok + garpu 200 pcs',
+                    'Kotak uang 2 Pcs',
+                    'Full karpet'
+                ],
+                perlengkapanLainnya: [
+                    'Kipas Blower besar 2 pcs',
+                    'Meja penerimaan tamu 2 set',
+                    'Meja tamu 2 set'
+                ],
+                chartData: [45, 30, 15, 10] // Estimated allocation for 25JT
+            },
+            '30jt': {
+                price: 'IDR 30.000.000,-',
+                heroImage: 'https://i.imgur.com/A6j8k9x.jpeg', // Placeholder for 30jt
+                busanaRias: [
+                    'Busana pengantin 3x ganti (premium collection)',
+                    'Busana orang tua 4 pasang + make up',
+                    'Busana pagar ayu 6 orang + make up',
+                    'Melati full ronce 2 set',
+                    'Buket bunga asli (premium design)',
+                    'Henna White asli',
+                    'Softlens + kuku + perawatan pre-wedding'
+                ],
+                dokumentasi: [
+                    'Photo + Video Syuting (2 fotografer, 2 videografer)',
+                    'Album kolase 20 lembar (premium album)',
+                    'Video Cinematik (full day coverage)',
+                    'Softfile Flashdisk + online gallery',
+                    'Drone footage'
+                ],
+                dekorasi: [
+                    'Tenda full decoration 180m (premium fabric)',
+                    'Pelaminan 8m full decoration (premium bunga asli + lighting)',
+                    'Bebas pilih warna tenda + custom design',
+                    'Kursi futura + cover 200pcs + pita',
+                    'Gapura penerima tamu ukuran 4x4 meter (grand design)',
+                    'Full karpet + red carpet aisle',
+                    'Janur jumbo 2pcs',
+                    'Blower pendingin 4 unit',
+                    'Kotak uang 2pcs (exclusive design)',
+                    'Mini garden full dekorasi (extensive)',
+                    'Meja VIP 2 set'
+                ],
+                perlengkapanLainnya: [
+                    'Piring, sendok, & garpu 250 pcs (premium quality)',
+                    'Gubukan jajanan 4 meja',
+                    'Meja prasmanan 2 baris',
+                    'Meja bulat 2',
+                    'Meja penerima tamu 2 (exclusive design)',
+                    'Meja akad 1 (premium decor)',
+                    'Rolltop 8pcs',
+                    'Tempat kerupuk 2',
+                    'Tempat es 2',
+                    'Tempat sop 2',
+                    'Termos nasi 4',
+                    'Sound system profesional'
+                ],
+                chartData: [45, 25, 20, 10] // Estimated allocation for 30JT
+            },
+            '35jt': {
+                price: 'IDR 35.000.000,-',
+                heroImage: 'https://i.imgur.com/Y7x3e4Z.jpeg', // Placeholder for 35jt
+                busanaRias: [
+                    'Busana pengantin 4x ganti (VIP collection)',
+                    'Busana orang tua 4 pasang + make up + hair do',
+                    'Busana pagar ayu 8 orang + make up + hair do',
+                    'Melati full ronce 2 set (fresh flower premium)',
+                    'Buket bunga asli (luxury design)',
+                    'Henna White asli + Henna color',
+                    'Softlens + kuku + perawatan pre-wedding & post-wedding',
+                    'Make up retouch for bride during event'
+                ],
+                dokumentasi: [
+                    'Photo + Video Syuting (3 fotografer, 3 videografer)',
+                    'Album kolase 30 lembar (luxury custom album)',
+                    'Video Cinematik (full day coverage + highlight video)',
+                    'Softfile Flashdisk + online gallery + printed photos',
+                    'Drone footage (extended coverage)',
+                    'Pre-wedding photo session (1 location)'
+                ],
+                dekorasi: [
+                    'Tenda full decoration 200m (luxury fabric + chandelier)',
+                    'Pelaminan 10m full decoration (grand design, premium fresh flowers, elaborate lighting)',
+                    'Bebas pilih warna tenda + custom design + 3D rendering',
+                    'Kursi futura + cover 250pcs + custom ribbon',
+                    'Gapura penerima tamu ukuran 5x5 meter (bespoke design)',
+                    'Full karpet + red carpet aisle + stage decoration',
+                    'Janur jumbo 3pcs (custom design)',
+                    'Blower pendingin 6 unit',
+                    'Kotak uang 3pcs (crystal/glass design)',
+                    'Mini garden full dekorasi (extensive + water feature)',
+                    'Meja VIP 4 set (luxurious)',
+                    'Wedding gate/entrance arch'
+                ],
+                perlengkapanLainnya: [
+                    'Piring, sendok, & garpu 300 pcs (premium quality, custom engraving option)',
+                    'Gubukan jajanan 6 meja (diverse options)',
+                    'Meja prasmanan 3 baris',
+                    'Meja bulat 4',
+                    'Meja penerima tamu 3 (bespoke design)',
+                    'Meja akad 1 (luxury decor, custom backdrop)',
+                    'Rolltop 10pcs',
+                    'Tempat kerupuk 3',
+                    'Tempat es 3',
+                    'Tempat sop 3',
+                    'Termos nasi 6',
+                    'Sound system profesional + live music stage',
+                    'Projector & screen'
+                ],
+                chartData: [50, 25, 20, 5] // Estimated allocation for 35JT
+            }
+        };
+
+        let currentPackage = '20jt'; // Set default package to 20jt
+        let packageChartInstance; // Variable to hold the Chart.js instance
+
+        // Function to update the content based on the selected package
+        function updatePackageContent(packageName) {
+            const packageData = packages[packageName];
+            const tabContentElement = document.getElementById('tab-content');
+            const heroPriceElement = document.getElementById('hero-price');
+            const heroSectionElement = document.getElementById('hero'); // Get the hero section
+            const heroContentDiv = heroSectionElement.querySelector('.relative.z-10'); // Get the inner content div of hero
+
+            // Start fade-out effect for hero price and hero content
+            heroPriceElement.classList.add('fade-out');
+            if (heroContentDiv) {
+                heroContentDiv.classList.add('fade-out');
+            }
+
+            // Start fade-out effect for tab content
+            tabContentElement.classList.add('fade-out');
+
+            // Allow fade-out to complete before updating content and fading in
+            setTimeout(() => {
+                // Update hero section price
+                heroPriceElement.textContent = packageData.price;
+
+                // Update hero section background image
+                heroSectionElement.style.backgroundImage = `url('${packageData.heroImage}')`;
+
+                // Update tab content
+                tabContentElement.innerHTML = `
+                    <div id="tab1" class="tab-pane active">
+                        <h3 class="text-2xl font-bold mb-4 text-amber-700">Busana & Rias</h3>
+                        <ul class="space-y-3 list-disc list-inside text-stone-700">
+                            ${packageData.busanaRias.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div id="tab2" class="tab-pane hidden">
+                        <h3 class="text-2xl font-bold mb-4 text-amber-700">Dokumentasi</h3>
+                        <ul class="space-y-3 list-disc list-inside text-stone-700">
+                            ${packageData.dokumentasi.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div id="tab3" class="tab-pane hidden">
+                        <h3 class="text-2xl font-bold mb-4 text-amber-700">Dekorasi</h3>
+                        <ul class="space-y-3 list-disc list-inside text-stone-700">
+                            ${packageData.dekorasi.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div id="tab4" class="tab-pane hidden">
+                        <h3 class="text-2xl font-bold mb-4 text-amber-700">Perlengkapan Lainnya</h3>
+                        <ul class="space-y-3 list-disc list-inside text-stone-700">
+                            ${packageData.perlengkapanLainnya.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+
+                // Reset active tab to the first one after package change
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                document.querySelector('.tab-button[data-tab="tab1"]').classList.add('active');
+
+                // Update chart data
+                if (packageChartInstance) {
+                    packageChartInstance.data.datasets[0].data = packageData.chartData;
+                    packageChartInstance.update();
+                }
+
+                // Update WhatsApp link
+                const whatsappLink = document.getElementById('whatsapp-link');
+                whatsappLink.href = `https://wa.me/6281218167654?text=Halo%2C%20saya%20tertarik%20dengan%20paket%20pernikahan%20${packageName}.`;
+
+                // Remove fade-out and add fade-in for hero price
+                heroPriceElement.classList.remove('fade-out');
+                heroPriceElement.classList.add('fade-in');
+                heroPriceElement.addEventListener('transitionend', function handler() {
+                    heroPriceElement.classList.remove('fade-in');
+                    heroPriceElement.removeEventListener('transitionend', handler);
+                });
+
+                // Remove fade-out and add fade-in for tab content
+                tabContentElement.classList.remove('fade-out');
+                tabContentElement.classList.add('fade-in');
+                tabContentElement.addEventListener('transitionend', function handler() {
+                    tabContentElement.classList.remove('fade-in');
+                    tabContentElement.removeEventListener('transitionend', handler);
+                });
+
+                // Remove fade-out and add fade-in for hero content div
+                if (heroContentDiv) {
+                    heroContentDiv.classList.remove('fade-out');
+                    heroContentDiv.classList.add('fade-in');
+                    heroContentDiv.addEventListener('transitionend', function handler() {
+                        heroContentDiv.classList.remove('fade-in');
+                        heroContentDiv.removeEventListener('transitionend', handler);
+                    });
+                }
+
+            }, 300); // Match this duration with the CSS transition duration
+        }
+
+        // Initialize Chart.js
+        const ctx = document.getElementById('packageChart').getContext('2d');
+        packageChartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Dekorasi & Perlengkapan', 'Busana & Rias', 'Dokumentasi', 'Lain-lain'],
+                datasets: [{
+                    label: 'Estimasi Alokasi Nilai',
+                    data: packages[currentPackage].chartData, // Initial data from default package
+                    backgroundColor: [
+                        '#B8860B', // Darker Gold
+                        '#DAA520', // Goldenrod
+                        '#FFD700', // Gold
+                        '#FFBF00', // Amber
+                    ],
+                    borderColor: '#FDFBF8',
+                    borderWidth: 4,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#333',
+                            font: {
+                                family: "'Lato', sans-serif",
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Event listeners for package selection buttons
+        document.querySelectorAll('.package-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const selectedPackage = button.getAttribute('data-package');
+                currentPackage = selectedPackage; // Update current package
+
+                // Remove active class from all package buttons
+                document.querySelectorAll('.package-button').forEach(btn => btn.classList.remove('active'));
+                // Add active class to the clicked button
+                button.classList.add('active');
+
+                updatePackageContent(currentPackage); // Update content based on selected package
+            });
+        });
+
+        // Event listeners for tab buttons (remains the same as before)
+        const tabs = document.querySelectorAll('.tab-button');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.getAttribute('data-tab');
+
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Re-select tabPanes after content update to ensure correct elements are targeted
+                const currentTabPanes = document.querySelectorAll('#tab-content .tab-pane');
+                currentTabPanes.forEach(pane => {
+                    if (pane.id === target) {
+                        pane.classList.remove('hidden');
+                        pane.classList.add('active');
+                    } else {
+                        pane.classList.add('hidden');
+                        pane.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Initial content load for the default package (20jt)
+        updatePackageContent(currentPackage);
+    </script>
+
+</body>
+</html>
